@@ -35,8 +35,9 @@ public class RapidSMSAlertsService {
 			if (oruMsg != null) {
 				log.info("Successfully parsed body as HL7v2 ORU_R01 message");
 				//TODO determine result of alert request
-				//if ((oruMsg.getPATIENT_RESULT().getPATIENT().getVISIT().getPV1().getPv14_AdmissionType().getValue()).toLowerCase().contains("referral")) {
-				if (true) {
+				if ((oruMsg.getPATIENT_RESULT().getPATIENT().getVISIT().getPV1().getPv14_AdmissionType().getValue()).toLowerCase().contains("referral") &&
+					!(oruMsg.getPATIENT_RESULT().getPATIENT().getVISIT().getPV1().getPv14_AdmissionType().getValue()).toLowerCase().contains("confirmation")) {
+				//if (true) {
 					sendRapidSMSAlert(oruMsg, pid, idType);
 					log.info("Sent RapidSMS alert message");
 				} else {
