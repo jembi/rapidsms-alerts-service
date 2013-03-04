@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="rapidsms-alerts-service">
-    <flow SubFlow="false" name="rapidsms-alerts-serviceFlow1" entity-id="6ab50dcf-f8ca-4ff1-8784-06b398d096f1">
+    <flow SubFlow="false" name="rapidsms-alerts-serviceFlow1" entity-id="d7a85b18-6657-4a98-9f07-f1a4f1a06899">
         <properties>
             <property name="processingStrategy2"/>
             <property name="processingStrategy"/>
@@ -54,20 +54,97 @@
                     <property name="auxiliary;index" value="2"/>
                 </properties>
             </endpoint>
-            <pattern name="Alerts Service" type="http://www.mulesoft.org/schema/mule/jersey/resources" entity-id="REST#1">
+            <splitter index="3" name="Choice" type="org.mule.tooling.ui.modules.core.pattern.cbr" entity-id="Choice#1">
                 <properties>
-                    <property name="ref" value=""/>
-                    <property name="auxiliary;index" value="3"/>
-                    <property name="updated"/>
-                    <property-collection name="@http://www.mulesoft.org/schema/mule/core/component;1">
-                        <property name="class" value="org.jembi.rhea.rapidsms.RapidSMSAlertsService"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property name=";INDEX" value="3"/>
+                    <property-collection name="960daa11-b9e4-4f68-a6fe-d88a9d78dc65">
+                        <property name="choice.expression" value="#[groovy: return true;]"/>
+                        <property-collection name="choice.attributes">
+                            <property name="expression" value="#[groovy: return true;]"/>
+                        </property-collection>
                     </property-collection>
-                    <property-collection name="@http://www.mulesoft.org/schema/mule/core/refInterceptorStackType;28383022">
-                        <property name="ref" value=""/>
+                    <property-collection name="1bb50d29-e8ef-4756-8a41-b558bafe161a">
+                        <property name="choice.otherwise" value="true"/>
+                        <property-collection name="choice.attributes"/>
                     </property-collection>
                 </properties>
-                <description></description>
-            </pattern>
+                <pattern name="Choice" type="org.mule.tooling.ui.modules.core.pattern.cbr" entity-id="Choice#2">
+                    <properties>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property name=";INDEX" value="3"/>
+                        <property-collection name="960daa11-b9e4-4f68-a6fe-d88a9d78dc65">
+                            <property name="choice.expression" value="#[groovy: return true;]"/>
+                            <property-collection name="choice.attributes">
+<property name="expression" value="#[groovy: return true;]"/>
+                            </property-collection>
+                        </property-collection>
+                        <property-collection name="1bb50d29-e8ef-4756-8a41-b558bafe161a">
+                            <property name="choice.otherwise" value="true"/>
+                            <property-collection name="choice.attributes"/>
+                        </property-collection>
+                    </properties>
+                </pattern>
+                <compartment entity-id="compartment#1">
+                    <lane hadOnlyOneElement="false" index="5" isChoiceOtherwiseLane="false" entity-id="960daa11-b9e4-4f68-a6fe-d88a9d78dc65">
+                        <pattern name="Clickatell Service" type="http://www.mulesoft.org/schema/mule/jersey/resources" entity-id="f8f93edc-9580-4400-b14a-eb890ef130c2">
+                            <properties>
+<property name="ref" value=""/>
+<property name="updated"/>
+<property-collection name="@http://www.mulesoft.org/schema/mule/core/component;1">
+    <property name="class" value="org.jembi.rhea.rapidsms.ClickatellAlertsService"/>
+    <property name="isProcessed$$$$" value="true"/>
+</property-collection>
+<property-collection name="@http://www.mulesoft.org/schema/mule/core/refInterceptorStackType;27347037">
+    <property name="ref" value=""/>
+    <property name="isProcessed$$$$" value="true"/>
+</property-collection>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                    <lane hadOnlyOneElement="false" index="8" isChoiceOtherwiseLane="true" entity-id="1bb50d29-e8ef-4756-8a41-b558bafe161a">
+                        <pattern name="RapidSMS Service" type="http://www.mulesoft.org/schema/mule/jersey/resources" entity-id="REST#1">
+                            <properties>
+<property name="ref" value=""/>
+<property name="auxiliary;index" value="9"/>
+<property name="updated"/>
+<property-collection name="@http://www.mulesoft.org/schema/mule/core/component;0">
+    <property name="class" value="org.jembi.rhea.rapidsms.RapidSMSAlertsService"/>
+    <property name="auxiliary;wrapIn" value="10"/>
+    <property name="auxiliary;index" value="10"/>
+    <property name="isProcessed$$$$" value="true"/>
+</property-collection>
+<property-collection name="@http://www.mulesoft.org/schema/mule/core/refInterceptorStackType;14640497">
+    <property name="ref" value=""/>
+    <property name="isProcessed$$$$" value="true"/>
+</property-collection>
+                            </properties>
+                            <description></description>
+                        </pattern>
+                    </lane>
+                </compartment>
+            </splitter>
         </lane>
     </flow>
     <description></description>

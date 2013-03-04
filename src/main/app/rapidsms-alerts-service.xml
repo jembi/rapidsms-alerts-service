@@ -7,8 +7,21 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd ">
     <flow name="rapidsms-alerts-serviceFlow1" doc:name="rapidsms-alerts-serviceFlow1">
         <http:inbound-endpoint exchange-pattern="request-response" host="localhost" port="7767" doc:name="HTTP"/>
-        <jersey:resources doc:name="Alerts Service">
-            <component class="org.jembi.rhea.rapidsms.RapidSMSAlertsService"/>
-        </jersey:resources>
+        <choice doc:name="Choice">
+            <when expression="#[groovy: return true;]">
+                <processor-chain>
+                    <jersey:resources doc:name="Clickatell Service">
+                        <component class="org.jembi.rhea.rapidsms.ClickatellAlertsService"/>
+                    </jersey:resources>
+                </processor-chain>
+            </when>
+            <otherwise>
+                <processor-chain>
+                    <jersey:resources doc:name="RapidSMS Service">
+                        <component class="org.jembi.rhea.rapidsms.RapidSMSAlertsService"/>
+                    </jersey:resources>
+                </processor-chain>
+            </otherwise>
+        </choice>
     </flow>
 </mule>
