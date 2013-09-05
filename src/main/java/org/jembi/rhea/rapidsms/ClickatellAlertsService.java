@@ -33,8 +33,10 @@ public class ClickatellAlertsService implements MuleContextAware {
 	
 	@Path("patient/encounters")
 	@POST
-	public Response processEncounter(String body, @QueryParam("patientId") String pid, @QueryParam("idType") String idType) {
+	public Response processEncounter(String body, @QueryParam("patientId") String pid, @QueryParam("idType") String idType) throws MuleException {
 		log.info("HIMSS 2013 OpenHIE Demo: Called Clickatell Alerts Service");
+		
+		MuleClient client = new MuleClient(context);
 		
 		Parser p = new GenericParser();
 		
@@ -49,7 +51,16 @@ public class ClickatellAlertsService implements MuleContextAware {
 				//TODO determine result of alert request
 				if ((oruMsg.getPATIENT_RESULT().getPATIENT().getVISIT().getPV1().getPv14_AdmissionType().getValue()).toLowerCase().contains("referral") &&
 					!(oruMsg.getPATIENT_RESULT().getPATIENT().getVISIT().getPV1().getPv14_AdmissionType().getValue()).toLowerCase().contains("confirmation")) {
-					new WaitForNextPhase(new MuleClient(context)).start();
+					new WaitForNextPhase(client).start();
+				} else if (body.contains("<CE.1>Z32.9</CE.1>")) {
+					// preg confirmed
+					String dxf = GenerateDHIS_DXF.generateDHIS_DXF(true, new Date());
+					client.dispatch("vm://sendToDHIS", dxf, null);
+					
+				} else if (body.contains("<CE.1>Z32.0</CE.1>")) {
+					// preg not confirmed
+					String dxf = GenerateDHIS_DXF.generateDHIS_DXF(false, new Date());
+					client.dispatch("vm://sendToDHIS", dxf, null);
 				} else {
 					log.info("ORU_R01 message is not a referral, no alert message sent");
 				}

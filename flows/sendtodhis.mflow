@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="SendClickatellSMS">
-    <flow SubFlow="false" name="SendClickatellSMSFlow1" entity-id="b2618904-f9aa-4d4e-a0ae-86625db41ffb">
+<mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="sendtoDHIS">
+    <flow SubFlow="false" name="sendtoDHISFlow1" entity-id="ff5ad90b-7ab6-4e57-839d-9c24160b6c22">
         <properties>
             <property name="processingStrategy"/>
             <property name="processingStrategy2"/>
@@ -18,7 +18,7 @@
                     <property name="address"/>
                     <property name="businessEventsLabel"/>
                     <property name="encoding"/>
-                    <property name="path" value="sendClickatellSMS"/>
+                    <property name="path" value="sendToDHIS"/>
                     <property name="responseTransformer-refs"/>
                     <property name="disableTransportTransformer"/>
                     <property name="mimeType"/>
@@ -29,25 +29,52 @@
                     <property name="connector-ref"/>
                 </properties>
             </endpoint>
+            <pattern name="Logger" type="http://www.mulesoft.org/schema/mule/core/logger" entity-id="Logger#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="message" value="Sending dataValue to DHIS, the message: #[payload:]"/>
+                    <property name="category"/>
+                    <property name="level" value="INFO"/>
+                    <property name="auxiliary;index" value="3"/>
+                </properties>
+            </pattern>
+            <pattern name="Add basic auth" type="http://www.mulesoft.org/schema/mule/core/message-properties-transformer" entity-id="Message Properties#1">
+                <graphicalData x="0" y="0" width="0" height="0"/>
+                <properties>
+                    <property name="returnClass"/>
+                    <property name="ignoreBadInput"/>
+                    <property name="scope"/>
+                    <property name="overwrite"/>
+                    <property name="encoding"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="4"/>
+                    <property-collection name="@http://www.mulesoft.org/schema/mule/core/add-message-property;0">
+                        <property name="value" value="Basic YWRtaW46SjNtYjEjMTIz"/>
+                        <property name="isProcessed$$$$" value="true"/>
+                        <property name="key" value="Authorization"/>
+                        <property name="auxiliary;index" value="5"/>
+                        <property name="auxiliary;wrapIn" value="5"/>
+                    </property-collection>
+                </properties>
+            </pattern>
             <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#1">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="port" value="80"/>
-                    <property name="auxiliary;erased;mimeType" value="true"/>
+                    <property name="port" value="5002"/>
                     <property name="contentType" value=""/>
                     <property name="password" value=""/>
-                    <property name="exchange-pattern" value="request-response"/>
                     <property name="tracking:enable-default-events" value="false"/>
+                    <property name="exchange-pattern" value="request-response"/>
                     <property name="updated"/>
                     <property name="auxiliary;erased;encoding" value="true"/>
                     <property name="encoding" value=""/>
-                    <property name="path" value="http/sendmsg?user=USER&amp;password=PASSWORD&amp;api_id=API&amp;to=CELL&amp;text=Mosa+missed+urgent+referral"/>
+                    <property name="path" value="api/dataValueSets"/>
                     <property name="responseTransformer-refs" value=""/>
-                    <property name="auxiliary;index" value="3"/>
+                    <property name="auxiliary;index" value="6"/>
+                    <property name="mimeType" value="application/xml"/>
                     <property name="responseTimeout" value="10000"/>
-                    <property name="mimeType" value=""/>
                     <property name="auxiliary;erased;contentType" value="true"/>
-                    <property name="host" value="api.clickatell.com"/>
+                    <property name="host" value="ict4h-him.jembi.org"/>
                     <property name="businessEventsLabel" value=""/>
                     <property name="followRedirects" value="false"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
@@ -57,16 +84,19 @@
                     <property name="transformer-refs" value=""/>
                     <property name="httpLabel" value=""/>
                     <property name="address" value=""/>
-                    <property name="method" value="GET"/>
+                    <property name="method" value="POST"/>
                     <property name="user" value=""/>
                     <property name="connector-ref" value=""/>
                 </properties>
                 <description></description>
             </endpoint>
-            <pattern name="Echo" type="org.mule.tooling.ui.modules.core.pattern.echo" entity-id="Echo#1">
+            <pattern name="Logger" type="http://www.mulesoft.org/schema/mule/core/logger" entity-id="Logger#2">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="auxiliary;index" value="4"/>
+                    <property name="message" value="Recieved response from DHIS:&#xA;#[groovy: message.toString()]&#xA;The payload is:&#xA;#[groovy: message.getPayloadAsString()]"/>
+                    <property name="category"/>
+                    <property name="level" value="INFO"/>
+                    <property name="auxiliary;index" value="7"/>
                 </properties>
             </pattern>
         </lane>
