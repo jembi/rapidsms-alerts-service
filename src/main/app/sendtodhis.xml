@@ -10,7 +10,7 @@ http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/cor
         <message-properties-transformer doc:name="Add basic auth">
             <add-message-property key="Authorization" value="Basic YWRtaW46SjNtYjEjMTIz"/>
         </message-properties-transformer>
-        <http:outbound-endpoint exchange-pattern="request-response" host="ict4h-him.jembi.org" port="5002" path="api/dataValueSets" method="POST" mimeType="application/xml" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="ict4h-him.jembi.org" port="5002" path="api/events" method="POST" mimeType="application/xml" doc:name="HTTP"/>
         <logger message="Recieved response from DHIS:
 #[groovy: message.toString()]
 The payload is:

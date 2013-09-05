@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="sendtoDHIS">
-    <flow SubFlow="false" name="sendtoDHISFlow1" entity-id="ff5ad90b-7ab6-4e57-839d-9c24160b6c22">
+    <flow SubFlow="false" name="sendtoDHISFlow1" entity-id="7b93ecbe-7ffd-49b7-b653-3d42e4223388">
         <properties>
             <property name="processingStrategy"/>
             <property name="processingStrategy2"/>
@@ -68,7 +68,7 @@
                     <property name="updated"/>
                     <property name="auxiliary;erased;encoding" value="true"/>
                     <property name="encoding" value=""/>
-                    <property name="path" value="api/dataValueSets"/>
+                    <property name="path" value="api/events"/>
                     <property name="responseTransformer-refs" value=""/>
                     <property name="auxiliary;index" value="6"/>
                     <property name="mimeType" value="application/xml"/>
