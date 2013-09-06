@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:spring="http://www.springframework.org/schema/beans" version="EE-3.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-current.xsd
-http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+	<context:property-placeholder location="classpath:alert-service.properties"></context:property-placeholder>
     <flow name="SendClickatellSMSFlow1" doc:name="SendClickatellSMSFlow1">
         <vm:inbound-endpoint exchange-pattern="one-way" path="sendClickatellSMS" doc:name="VM"/>
-        <http:outbound-endpoint exchange-pattern="request-response" host="api.clickatell.com" port="80" path="http/sendmsg?user=USER&amp;password=PASSWORD&amp;api_id=API&amp;to=CELL&amp;text=Mosa+missed+urgent+referral" method="GET" doc:name="HTTP"/>
+        <http:outbound-endpoint exchange-pattern="request-response" host="api.clickatell.com" port="80" path="http/sendmsg?user=${clickatell.user}&amp;password=${clickatell.pass}&amp;api_id=${clickatell.api.id}&amp;to=${clickatell.to}&amp;text=${clickatell.text}" method="GET" doc:name="HTTP"/>
         <echo-component doc:name="Echo"/>
     </flow>
 </mule>

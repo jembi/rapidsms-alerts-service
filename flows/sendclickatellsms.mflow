@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="SendClickatellSMS">
-    <flow SubFlow="false" name="SendClickatellSMSFlow1" entity-id="b2618904-f9aa-4d4e-a0ae-86625db41ffb">
+    <global-element name="Property Placeholder" type="http://www.springframework.org/schema/context/property-placeholder" entity-id="Property Placeholder#1">
+        <properties>
+            <property name="properties-ref"/>
+            <property name="order"/>
+            <property name="location" value="classpath:alert-service.properties"/>
+            <property name="local-override"/>
+            <property name="system-properties-mode"/>
+            <property name="file-encoding"/>
+            <property name="auxiliary;index" value="1"/>
+            <property name="ignore-unresolvable"/>
+            <property name="ignore-resource-not-found"/>
+        </properties>
+    </global-element>
+    <flow SubFlow="false" name="SendClickatellSMSFlow1" entity-id="7f5887bb-6297-4fc0-87d1-2c86ce1752fe">
         <properties>
             <property name="processingStrategy"/>
             <property name="processingStrategy2"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property name="auxiliary;index" value="1"/>
+            <property name="auxiliary;index" value="2"/>
         </properties>
         <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
             <graphicalData x="0" y="0" width="0" height="0"/>
@@ -24,7 +37,7 @@
                     <property name="mimeType"/>
                     <property name="responseTimeout"/>
                     <property name="tracking:enable-default-events"/>
-                    <property name="auxiliary;index" value="2"/>
+                    <property name="auxiliary;index" value="3"/>
                     <property name="exchange-pattern" value="one-way"/>
                     <property name="connector-ref"/>
                 </properties>
@@ -33,40 +46,35 @@
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
                     <property name="port" value="80"/>
-                    <property name="auxiliary;erased;mimeType" value="true"/>
-                    <property name="contentType" value=""/>
-                    <property name="password" value=""/>
-                    <property name="exchange-pattern" value="request-response"/>
-                    <property name="tracking:enable-default-events" value="false"/>
-                    <property name="updated"/>
-                    <property name="auxiliary;erased;encoding" value="true"/>
-                    <property name="encoding" value=""/>
-                    <property name="path" value="http/sendmsg?user=USER&amp;password=PASSWORD&amp;api_id=API&amp;to=CELL&amp;text=Mosa+missed+urgent+referral"/>
-                    <property name="responseTransformer-refs" value=""/>
-                    <property name="auxiliary;index" value="3"/>
-                    <property name="responseTimeout" value="10000"/>
-                    <property name="mimeType" value=""/>
-                    <property name="auxiliary;erased;contentType" value="true"/>
                     <property name="host" value="api.clickatell.com"/>
-                    <property name="businessEventsLabel" value=""/>
-                    <property name="followRedirects" value="false"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="followRedirects"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
-                    <property name="keep-alive" value="false"/>
-                    <property name="disableTransportTransformer" value="false"/>
-                    <property name="ref" value=""/>
-                    <property name="transformer-refs" value=""/>
-                    <property name="httpLabel" value=""/>
-                    <property name="address" value=""/>
+                    <property name="keep-alive"/>
+                    <property name="contentType"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="password"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="httpLabel"/>
+                    <property name="address"/>
+                    <property name="path" value="http/sendmsg?user=${clickatell.user}&amp;password=${clickatell.pass}&amp;api_id=${clickatell.api.id}&amp;to=${clickatell.to}&amp;text=${clickatell.text}"/>
+                    <property name="encoding"/>
+                    <property name="responseTransformer-refs"/>
                     <property name="method" value="GET"/>
-                    <property name="user" value=""/>
-                    <property name="connector-ref" value=""/>
+                    <property name="user"/>
+                    <property name="responseTimeout"/>
+                    <property name="mimeType"/>
+                    <property name="auxiliary;index" value="4"/>
+                    <property name="connector-ref"/>
                 </properties>
-                <description></description>
             </endpoint>
             <pattern name="Echo" type="org.mule.tooling.ui.modules.core.pattern.echo" entity-id="Echo#1">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="auxiliary;index" value="4"/>
+                    <property name="auxiliary;index" value="5"/>
                 </properties>
             </pattern>
         </lane>

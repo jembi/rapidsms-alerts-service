@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <mule-configuration xmlns="http://www.mulesoft.com/tooling/messageflow" name="sendtoDHIS">
-    <flow SubFlow="false" name="sendtoDHISFlow1" entity-id="7b93ecbe-7ffd-49b7-b653-3d42e4223388">
+    <global-element name="Property Placeholder" type="http://www.springframework.org/schema/context/property-placeholder" entity-id="Property Placeholder#1">
+        <properties>
+            <property name="properties-ref"/>
+            <property name="order"/>
+            <property name="location" value="classpath:alert-service.properties"/>
+            <property name="local-override"/>
+            <property name="system-properties-mode"/>
+            <property name="file-encoding"/>
+            <property name="auxiliary;index" value="1"/>
+            <property name="ignore-unresolvable"/>
+            <property name="ignore-resource-not-found"/>
+        </properties>
+    </global-element>
+    <flow SubFlow="false" name="sendtoDHISFlow1" entity-id="c52a0159-0e34-4884-8dbe-870ebd3787ce">
         <properties>
             <property name="processingStrategy"/>
             <property name="processingStrategy2"/>
             <property name="bussinessEventsLabel"/>
             <property name="tracking:enable-default-events"/>
-            <property name="auxiliary;index" value="1"/>
+            <property name="auxiliary;index" value="2"/>
         </properties>
         <lane hadOnlyOneElement="false" index="0" isChoiceOtherwiseLane="false" entity-id="compartment-lane#1">
             <graphicalData x="0" y="0" width="0" height="0"/>
@@ -24,7 +37,7 @@
                     <property name="mimeType"/>
                     <property name="responseTimeout"/>
                     <property name="tracking:enable-default-events"/>
-                    <property name="auxiliary;index" value="2"/>
+                    <property name="auxiliary;index" value="3"/>
                     <property name="exchange-pattern" value="one-way"/>
                     <property name="connector-ref"/>
                 </properties>
@@ -35,7 +48,7 @@
                     <property name="message" value="Sending dataValue to DHIS, the message: #[payload:]"/>
                     <property name="category"/>
                     <property name="level" value="INFO"/>
-                    <property name="auxiliary;index" value="3"/>
+                    <property name="auxiliary;index" value="4"/>
                 </properties>
             </pattern>
             <pattern name="Add basic auth" type="http://www.mulesoft.org/schema/mule/core/message-properties-transformer" entity-id="Message Properties#1">
@@ -47,48 +60,43 @@
                     <property name="overwrite"/>
                     <property name="encoding"/>
                     <property name="mimeType"/>
-                    <property name="auxiliary;index" value="4"/>
+                    <property name="auxiliary;index" value="5"/>
                     <property-collection name="@http://www.mulesoft.org/schema/mule/core/add-message-property;0">
-                        <property name="value" value="Basic YWRtaW46SjNtYjEjMTIz"/>
-                        <property name="isProcessed$$$$" value="true"/>
+                        <property name="value" value="${dhis.auth}"/>
                         <property name="key" value="Authorization"/>
-                        <property name="auxiliary;index" value="5"/>
-                        <property name="auxiliary;wrapIn" value="5"/>
+                        <property name="auxiliary;index" value="6"/>
+                        <property name="auxiliary;wrapIn" value="6"/>
                     </property-collection>
                 </properties>
             </pattern>
             <endpoint direction="Outbound" message-exchange-pattern="RequestResponse" name="HTTP" type="http://www.mulesoft.org/schema/mule/http/endpoint" entity-id="HTTP#1">
                 <graphicalData x="0" y="0" width="0" height="0"/>
                 <properties>
-                    <property name="port" value="5002"/>
-                    <property name="contentType" value=""/>
-                    <property name="password" value=""/>
-                    <property name="tracking:enable-default-events" value="false"/>
-                    <property name="exchange-pattern" value="request-response"/>
-                    <property name="updated"/>
-                    <property name="auxiliary;erased;encoding" value="true"/>
-                    <property name="encoding" value=""/>
-                    <property name="path" value="api/events"/>
-                    <property name="responseTransformer-refs" value=""/>
-                    <property name="auxiliary;index" value="6"/>
-                    <property name="mimeType" value="application/xml"/>
-                    <property name="responseTimeout" value="10000"/>
-                    <property name="auxiliary;erased;contentType" value="true"/>
-                    <property name="host" value="ict4h-him.jembi.org"/>
-                    <property name="businessEventsLabel" value=""/>
-                    <property name="followRedirects" value="false"/>
+                    <property name="port" value="${dhis.port}"/>
+                    <property name="host" value="${dhis.host}"/>
+                    <property name="businessEventsLabel"/>
+                    <property name="followRedirects"/>
                     <property name="org.mule.tooling.ui.modules.core.widgets.meta.ModeAttribute" value="http://www.mulesoft.org/schema/mule/http/endpoint"/>
-                    <property name="keep-alive" value="false"/>
-                    <property name="disableTransportTransformer" value="false"/>
-                    <property name="ref" value=""/>
-                    <property name="transformer-refs" value=""/>
-                    <property name="httpLabel" value=""/>
-                    <property name="address" value=""/>
+                    <property name="keep-alive"/>
+                    <property name="contentType"/>
+                    <property name="disableTransportTransformer"/>
+                    <property name="password"/>
+                    <property name="exchange-pattern" value="request-response"/>
+                    <property name="tracking:enable-default-events"/>
+                    <property name="ref"/>
+                    <property name="transformer-refs"/>
+                    <property name="httpLabel"/>
+                    <property name="address"/>
+                    <property name="path" value="api/events"/>
+                    <property name="encoding"/>
+                    <property name="responseTransformer-refs"/>
                     <property name="method" value="POST"/>
-                    <property name="user" value=""/>
-                    <property name="connector-ref" value=""/>
+                    <property name="user"/>
+                    <property name="responseTimeout"/>
+                    <property name="mimeType" value="application/xml"/>
+                    <property name="auxiliary;index" value="7"/>
+                    <property name="connector-ref"/>
                 </properties>
-                <description></description>
             </endpoint>
             <pattern name="Logger" type="http://www.mulesoft.org/schema/mule/core/logger" entity-id="Logger#2">
                 <graphicalData x="0" y="0" width="0" height="0"/>
@@ -96,7 +104,7 @@
                     <property name="message" value="Recieved response from DHIS:&#xA;#[groovy: message.toString()]&#xA;The payload is:&#xA;#[groovy: message.getPayloadAsString()]"/>
                     <property name="category"/>
                     <property name="level" value="INFO"/>
-                    <property name="auxiliary;index" value="7"/>
+                    <property name="auxiliary;index" value="8"/>
                 </properties>
             </pattern>
         </lane>
